@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS categories(
 
 create_table_books = """
 CREATE TABLE IF NOT EXISTS books(
-    book_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    book_id TEXT PRIMARY KEY,
     author_id INTEGER,
     category_id INTEGER,
     title TEXT NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS books(
 create_table_borrow_records = """
 CREATE TABLE IF NOT EXISTS borrow_records(
     borrow_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    book_id INTEGER NOT NULL,
+    book_id TEXT NOT NULL,
     member_id INTEGER NOT NULL,
     borrow_date DATE NOT NULL,
     due_date DATE NOT NULL,
@@ -61,3 +61,11 @@ cursor.execute(create_table_authors)
 cursor.execute(create_table_categories)
 cursor.execute(create_table_books)
 cursor.execute(create_table_borrow_records)
+
+df= pd.read_csv('datasets/books_data/books.csv',
+                delimiter=';', encoding='latin1',
+                on_bad_lines='skip')
+df.drop(columns=['Image-URL-S', 'Image-URL-M', 'Image-URL-L'], inplace=True)
+print(df.head())
+print(df.columns)
+print(df['Year-Of-Publication'].dtype)
